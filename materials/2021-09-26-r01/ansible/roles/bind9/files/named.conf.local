@@ -1,0 +1,5 @@
+zone "neko.lab" IN {
+    type master;
+    file "/var/cache/bind/neko.lab.zone";
+    allow-update { none; };
+};

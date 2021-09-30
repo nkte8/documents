@@ -1,0 +1,69 @@
+---
+- name: set hostname
+  hostname:
+    name: "{{ inventory_hostname }}"
+
+- name: add the br_netfilter module
+  modprobe:
+    name: br_netfilter
+    state: present
+- name: sysctl net.ipv4.ip_nonlocal_bind
+  sysctl:
+    name: net.ipv4.ip_nonlocal_bind
+    value: "1"
+    state: present
+    sysctl_file: /etc/sysctl.d/k8s.conf
+- name: sysctl net.ipv4.ip_forward
+  sysctl:
+    name: net.ipv4.ip_forward
+    value: "1"
+    state: present
+    sysctl_file: /etc/sysctl.d/k8s.conf
+- name: sysctl net.bridge.bridge-nf-call-iptables
+  sysctl:
+    name: net.bridge.bridge-nf-call-iptables
+    value: "1"
+    state: present
+    sysctl_file: /etc/sysctl.d/k8s.conf
+- name: sysctl net.bridge.bridge-nf-call-ip6tables
+  sysctl:
+    name: net.bridge.bridge-nf-call-ip6tables
+    value: "1"
+    state: present
+    reload: true
+    sysctl_file: /etc/sysctl.d/k8s.conf
+
+- name: donot use systemd/resolve
+  lineinfile:
+    dest: /etc/systemd/resolved.conf
+    state: present
+    backrefs: yes
+    regexp: .*DNSStubListener=yes
+    line: DNSStubListener=no
+- name: make symbolic link of /etc/resolve.conf
+  file:
+    src: ../run/systemd/resolve/resolv.conf
+    dest: /etc/resolv.conf
+    state: link
+- name: restart systemd-resolved
+  service:
+    name: systemd-resolved
+    state: restarted
+
+- name: set cpu temperature limit
+  lineinfile:
+    dest: /boot/firmware/config.txt
+    line: temp_limit=70
+  register: temp_config
+- block:
+    - name: reboot for apply firmware config.txt
+      shell: reboot
+      async: 1
+      poll: 0
+      ignore_errors: true
+      changed_when: false
+    - name: wait for reboot
+      wait_for_connection:
+        delay: 30
+        timeout: 300
+  when: temp_config.changed

@@ -1,0 +1,33 @@
+---
+- name: get keepalived
+  apt:
+    update_cache: yes
+    name: keepalived
+- name: present keepalived.conf
+  copy:
+    src: files/base.conf
+    dest: /etc/keepalived/keepalived.conf
+    owner: root
+    group: root
+    mode: "u=rw,g=r,o=r"
+
+- name: <include playbook master group>
+  include: "master.yaml"
+  when:
+    - "'master' in group_names"
+
+- name: <include playbook gluster-server group>
+  include: "gluster.yaml"
+  when:
+    - "'gluster' in group_names"
+
+- name: <include playbook infra group>
+  include: "infra.yaml"
+  when:
+    - "'infra' in group_names"
+
+- name: enable keepalived
+  service:
+    name: keepalived
+    state: restarted
+    enabled: yes

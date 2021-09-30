@@ -1,0 +1,33 @@
+---
+- name: get bind9
+  apt:
+    name: "{{ item }}"
+  with_items:
+    - bind9
+    - bind9utils
+- name: present named.conf.local
+  copy:
+    src: named.conf.local
+    dest: /etc/bind/
+    owner: bind
+    group: bind
+    mode: "u=rw,g=r,o=r"
+- name: present named.conf.options
+  copy:
+    src: named.conf.options
+    dest: /etc/bind/
+    owner: bind
+    group: bind
+    mode: "u=rw,g=r,o=r"
+- name: present neko.lab.zone
+  copy:
+    src: neko.lab.zone
+    dest: /var/cache/bind/
+    owner: bind
+    group: bind
+    mode: "u=rw,g=r,o=r"
+- name: enable named
+  service:
+    name: named
+    state: restarted
+    enabled: yes
