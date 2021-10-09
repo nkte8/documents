@@ -7,7 +7,15 @@
 zennは技術共有プラットフォームで、github連携で記事を投稿することが可能です。  
 本プロジェクトでも連携して利用します。  
 
-## 参考  
+### プレビュー方法  
+
+zenn CLIインストール環境で以下を実行  
+```sh
+npx zenn preview
+```
+
+# 参考  
+
 CNIインストール： https://zenn.dev/zenn/articles/install-zenn-cli  
 Gitlab連携方法： https://zenn.dev/zenn/articles/connect-to-github  
 CLI使用方法： https://zenn.dev/zenn/articles/zenn-cli-guide  
