@@ -1,20 +1,25 @@
 # documents について
 
 技術文書の蓄積を目的としたプロジェクトです。  
+zennと連携されており、 https://zenn.dev/nkte8 に記事の形で整形され投稿されています。  
 
-## zenn について
+## 運用者用メモ  
 
-zennは技術共有プラットフォームで、github連携で記事を投稿することが可能です。  
-本プロジェクトでも連携して利用します。  
+### preview  
 
-### プレビュー方法  
-
-zenn CLIインストール環境で以下を実行  
+zenn CLIインストール環境で以下を実行、プレビューが可能  
 ```sh
 npx zenn preview
 ```
 
-# 参考  
+### ローカルリンク  
+
+下記の要領でzenn内記事を参照させることが可能。  
+```
+[表示内容](/USERNAME/articles/20XX-XX-XX-rXX)
+```
+
+## 参考  
 
 CNIインストール： https://zenn.dev/zenn/articles/install-zenn-cli  
 Gitlab連携方法： https://zenn.dev/zenn/articles/connect-to-github  
