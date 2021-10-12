@@ -5,14 +5,26 @@ zennと連携されており、 https://zenn.dev/nkte8 に記事の形で整形�
 
 ## 運用者用メモ  
 
+前提：zenn CLIインストール環境であること  
+
+### new:article
+
+新規記事の作成方法（r0X部分はその日の作成数に依存）  
+```sh
+article_slug=$(date +%Y-%m-%d)-r01
+git checkout -b ${article_slug} && \
+npx zenn new:article --published true --slug ${article_slug} && \
+mkdir -v ./images/${article_slug} && touch ./images/${article_slug}/.gitkeep
+```
+
 ### preview  
 
-zenn CLIインストール環境で以下を実行、プレビューが可能  
+以下コマンドでプレビュー  
 ```sh
 npx zenn preview
 ```
 
-### ローカルリンク  
+### 記法:ローカルリンク  
 
 下記の要領でzenn内記事を参照させることが可能。  
 ```
