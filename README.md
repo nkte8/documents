@@ -13,8 +13,12 @@ zennと連携されており、 https://zenn.dev/nkte8 に記事の形で整形�
 ```sh
 article_slug=$(date +%Y-%m-%d)-r01
 git checkout -b ${article_slug} && \
-npx zenn new:article --published true --slug ${article_slug} && \
+npx zenn new:article --published true --slug $(git rev-parse --abbrev-ref HEAD) && \
 mkdir -v ./images/${article_slug} && touch ./images/${article_slug}/.gitkeep
+```
+エイリアスの設定例  
+```sh 
+alias zenn='npx zenn new:article --published true --slug $(git rev-parse --abbrev-ref HEAD)' 
 ```
 
 ### preview  
